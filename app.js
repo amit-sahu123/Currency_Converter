@@ -1,12 +1,10 @@
-const BASE_URL= "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies"
+const BASE_URL = "https://v6.exchangerate-api.com/v6/377ea726a4ce141f689f79ed/latest";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("form button");
 const fromCurr = document.querySelector(".from select");
 const toCurr = document.querySelector(".to select");
 const msg = document.querySelector(".msg");
-
-
 
 for(let select of dropdowns)
     {
@@ -27,25 +25,28 @@ for(let select of dropdowns)
         });
     }
 
-    const updateExchangeRate= async()=>{
-        let amount=document.querySelector(".amount input");
-        let amtVal=amount.value;
-       
-        if(amtVal===""||amtVal<1){
-            amtVal=1;
-            amount.value="1";
-
-        }
-
-        
-        const URL=`${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
-        let response = await fetch(URL);
-        let data = await response.json();
-        let rate =data[toCurr.value.toLowerCase()];
-
-        let finalAmount= amtVal*rate;
-        msg.innerText=`${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
-    }
+    const updateExchangeRate = async () => {
+      let amount = document.querySelector(".amount input");
+      let amtVal = amount.value;
+  
+      if (amtVal === "" || amtVal < 1) {
+          amtVal = 1;
+          amount.value = "1";
+      }
+  
+      const fromCurrency = fromCurr.value;
+      const toCurrency = toCurr.value;
+  
+      const URL = `${BASE_URL}/${fromCurrency}`;
+      
+      let response = await fetch(URL);
+      let data = await response.json();
+      let rate = data.conversion_rates[toCurrency];
+      let finalAmount = amtVal * rate;
+      msg.innerText = `${amtVal} ${fromCurrency} = ${finalAmount} ${toCurrency}`;
+  }
+  
+ 
 
     const updateFlag=(element)=>{
         let currCode = element.value;
